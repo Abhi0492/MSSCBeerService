@@ -34,7 +34,7 @@ public class BeerController {
 		return new ResponseEntity<BeerDto>(HttpStatus.CREATED);
 	}
 	
-	@PostMapping("/{beerId}")
+	@PutMapping("/{beerId}")
 	public ResponseEntity<BeerDto> updateByBeerId(@PathVariable("beerId") UUID beerId, @RequestBody @Validated BeerDto beerDto) {
 		
 		//todo impl

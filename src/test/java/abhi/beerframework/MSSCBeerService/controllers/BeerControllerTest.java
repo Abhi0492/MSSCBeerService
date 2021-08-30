@@ -62,10 +62,10 @@ public class BeerControllerTest {
 		BeerDto beerDto = getValidBeer();
 		String beerDtoString = objectMapper.writeValueAsString(beerDto);
 		
-		mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/beer/")
+		mockMvc.perform(MockMvcRequestBuilders.put("/api/v1/beer/" + UUID.randomUUID().toString())
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(beerDtoString))
-				.andExpect(MockMvcResultMatchers.status().is2xxSuccessful());
+				.andExpect(MockMvcResultMatchers.status().isNoContent());
 		
 	}
 	
