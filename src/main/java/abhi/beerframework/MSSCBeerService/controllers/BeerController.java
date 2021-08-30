@@ -39,6 +39,7 @@ public class BeerController {
 		
 		//todo impl
 		return new ResponseEntity<BeerDto>(HttpStatus.NO_CONTENT);
+		//return new ResponseEntity<BeerDto>(HttpStatus.CONFLICT);
 	}
 	
 	
