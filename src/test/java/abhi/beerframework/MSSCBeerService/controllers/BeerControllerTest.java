@@ -7,6 +7,8 @@ import java.util.UUID;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.RequestBuilder;
@@ -19,11 +21,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import abhi.beerframework.MSSCBeerService.models.BeerDto;
 import abhi.beerframework.MSSCBeerService.models.BeerStyleEnum;
+import abhi.beerframework.MSSCBeerService.repositories.BeerRepository;
 
 
 
 
 @WebMvcTest(BeerController.class)
+@ComponentScan(basePackages =  "abhi.beerframework.MSSCBeerService.mappers")
 public class BeerControllerTest {
 
 	@Autowired
@@ -31,6 +35,9 @@ public class BeerControllerTest {
 	
 	@Autowired
 	ObjectMapper objectMapper;
+	
+	@MockBean
+	BeerRepository beerRepository;
 	
 	@Test
 	void getBeerById() throws Exception {

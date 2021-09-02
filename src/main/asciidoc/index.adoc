@@ -1,0 +1,27 @@
+# SFG Brewery Order Service Docs
+Abhishek Iyer;
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+
+Sample application demonstrating how to use Spring REST Docs with Junit 5.
+
+'BeerControllerTest' makes a call to a very simple service and makes a call to three documentation snippets.
+
+One showing how to make a request using cURL:
+
+include:{snippets}/orders/curl-request.adoc[]
+
+One showing the HTTP request:
+
+include::{snippets}/orders/http-request.adoc[]
+
+One showing the HTTP response:
+
+include::{snippets}/orders/http-response.adoc[]
+
+Response Body:
+include::{snippets}/orders/response-body.adoc[]
+
+Response Fields:
+include::{snippets}/orders/response-fields.adoc[]
