@@ -44,7 +44,7 @@ import abhi.beerframework.MSSCBeerService.repositories.BeerRepository;
 
 
 @ExtendWith(RestDocumentationExtension.class)
-@AutoConfigureRestDocs
+@AutoConfigureRestDocs(uriScheme = "https", uriHost = "dev.msscbeerservice", uriPort = 80)
 @WebMvcTest(BeerController.class)
 @ComponentScan(basePackages =  "abhi.beerframework.MSSCBeerService.mappers")
 public class BeerControllerTest {
