@@ -6,6 +6,7 @@ import java.util.UUID;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -13,6 +14,8 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.RestDocumentationExtension;
+import org.springframework.restdocs.constraints.ConstraintDescriptions;
+import org.springframework.restdocs.payload.FieldDescriptor;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.ResultMatcher;
@@ -28,6 +31,8 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.response
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import org.springframework.util.StringUtils;
+import static org.springframework.restdocs.snippet.Attributes.key;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -91,21 +96,35 @@ public class BeerControllerTest {
 		BeerDto beerDto = getValidBeer();
 		String beerDtoJson = objectMapper.writeValueAsString(beerDto);
 		
+		ConstraintFields fields = new ConstraintFields(BeerDto.class);
+		
 		mockMvc.perform(post("/api/v1/beer/")
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(beerDtoJson))
 				.andExpect(MockMvcResultMatchers.status().isCreated())
 				.andDo(document("v1/beer", 
 						requestFields(
-								fieldWithPath("id").ignored(),
-								fieldWithPath("version").ignored(),
-								fieldWithPath("createdDate").ignored(),
-								fieldWithPath("lastModifiedDate").ignored(),
-								fieldWithPath("beerName").description("Name of the Beer."),
-								fieldWithPath("beerStyle").description("Style of the Beer."),
-								fieldWithPath("upc").description("UPC of the Beer."),
-								fieldWithPath("price").description("Price of the Beer."),
-								fieldWithPath("quantityOnHand").ignored()
+						/*
+						 * fieldWithPath("id").ignored(), fieldWithPath("version").ignored(),
+						 * fieldWithPath("createdDate").ignored(),
+						 * fieldWithPath("lastModifiedDate").ignored(),
+						 * fieldWithPath("beerName").description("Name of the Beer."),
+						 * fieldWithPath("beerStyle").description("Style of the Beer."),
+						 * fieldWithPath("upc").description("UPC of the Beer."),
+						 * fieldWithPath("price").description("Price of the Beer."),
+						 * fieldWithPath("quantityOnHand").ignored()
+						 */
+								
+						fields.withPath("id").ignored(),
+						fields.withPath("version").ignored(),
+						fields.withPath("createdDate").ignored(),
+						fields.withPath("lastModifiedDate").ignored(),
+						fields.withPath("beerName").description("Name of the Beer."),
+						fields.withPath("beerStyle").description("Style of the Beer."),
+						fields.withPath("upc").description("UPC of the Beer.").attributes(),
+						fields.withPath("price").description("Price of the Beer."),
+						fields.withPath("quantityOnHand").ignored()
+								
 							)
 					));
 		
@@ -132,6 +151,22 @@ public class BeerControllerTest {
 				.price(new BigDecimal(160.34))
 				.upc(123123123123L)
 				.build();
+	}
+	
+	private static class ConstraintFields {
+		
+		private final ConstraintDescriptions constraintDescriptions;
+		
+		ConstraintFields(Class<?> input) {
+			this.constraintDescriptions = new ConstraintDescriptions(input);
+		}
+		
+		private FieldDescriptor withPath(String path) {
+			return fieldWithPath(path).attributes(key("constraints").value(StringUtils
+					.collectionToDelimitedString(this.constraintDescriptions
+							.descriptionsForProperty(path), ".")));
+		}
+		
 	}
 
 }
