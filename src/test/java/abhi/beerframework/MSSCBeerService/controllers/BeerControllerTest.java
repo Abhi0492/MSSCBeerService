@@ -24,6 +24,8 @@ import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.docu
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.requestParameters;
+import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
+import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -65,6 +67,17 @@ public class BeerControllerTest {
 	         			),
 	         			requestParameters(
 	         					parameterWithName("iscold").description("Is Beer Cold Query parameter.")
+	         			),
+	         			responseFields(
+	         					fieldWithPath("id").description("Id of Beer."),
+	         					fieldWithPath("version").description("Version of Beer."),
+	         					fieldWithPath("createdDate").description("Created Date of Beer."),
+	         					fieldWithPath("lastModifiedDate").description("Last Modified Date of Beer."),
+	         					fieldWithPath("beerName").description("Name of Beer."),
+	         					fieldWithPath("beerStyle").description("Style of Beer."),
+	         					fieldWithPath("upc").description("UPC of Beer."),
+	         					fieldWithPath("price").description("Price of Beer."),
+	         					fieldWithPath("quantityOnHand").description("Quantity On Hand of Beer.")
 	         			)
 	         		));
 		
