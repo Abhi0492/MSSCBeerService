@@ -23,6 +23,7 @@ import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuild
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.requestParameters;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -54,11 +55,18 @@ public class BeerControllerTest {
 		
 		
 		//mockMvc.perform(get("/api/v1/beer/" + UUID.randomUUID().toString()).accept(MediaType.APPLICATION_JSON))
-		mockMvc.perform(get("/api/v1/beer/{beerId}",UUID.randomUUID().toString()).accept(MediaType.APPLICATION_JSON))
+		mockMvc.perform(get("/api/v1/beer/{beerId}",UUID.randomUUID().toString())
+				.param("iscold", "yes")
+				.accept(MediaType.APPLICATION_JSON))
 	         	.andExpect(MockMvcResultMatchers.status().isOk())
-	         	.andDo(document("v1/beer", pathParameters(
-	         			parameterWithName("beerId").description("UUID of desired beer to get.")
-	         			)));
+	         	.andDo(document("v1/beer", 
+	         			pathParameters(
+	         					parameterWithName("beerId").description("UUID of desired beer to get.")
+	         			),
+	         			requestParameters(
+	         					parameterWithName("iscold").description("Is Beer Cold Query parameter.")
+	         			)
+	         		));
 		
 	}
 	
