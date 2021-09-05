@@ -26,6 +26,7 @@ import static org.springframework.restdocs.request.RequestDocumentation.paramete
 import static org.springframework.restdocs.request.RequestDocumentation.requestParameters;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -93,7 +94,20 @@ public class BeerControllerTest {
 		mockMvc.perform(post("/api/v1/beer/")
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(beerDtoJson))
-				.andExpect(MockMvcResultMatchers.status().isCreated());
+				.andExpect(MockMvcResultMatchers.status().isCreated())
+				.andDo(document("v1/beer", 
+						requestFields(
+								fieldWithPath("id").ignored(),
+								fieldWithPath("version").ignored(),
+								fieldWithPath("createdDate").ignored(),
+								fieldWithPath("lastModifiedDate").ignored(),
+								fieldWithPath("beerName").description("Name of the Beer."),
+								fieldWithPath("beerStyle").description("Style of the Beer."),
+								fieldWithPath("upc").description("UPC of the Beer."),
+								fieldWithPath("price").description("Price of the Beer."),
+								fieldWithPath("quantityOnHand").ignored()
+							)
+					));
 		
 	}
 	
